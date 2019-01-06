@@ -8,6 +8,7 @@
 const schemaManager = require('./parser/schemaManager');
 const schema = require('./target/target');
 const queryParser = require('./parser/queryParser');
+const queryValidator = require('./parser/queryValidator');
 
 
 const sm = new schemaManager();
@@ -22,7 +23,7 @@ for(let o=0 ; o<p.length ; o++){
 }
 
 
-queryParser.parse(	`mutation{
+/*let parsedQuery =  queryParser.parse(	`mutation hijk{
     b(id:1){
         a
     }
@@ -40,9 +41,23 @@ queryParser.parse(	`mutation{
             lo
         }
     }
-    g(id:567,id1:{a:1,b:2,c:[1,2,3,4,r,{5:5,a6:[1,2,3,4,5,6,7,8,8,9,{2:2}]}]})
+    g(id:567,id1:{a:1,b:2,c:[1,2,3,4,r,{5:5,a6:[1,2,3,4,5,6,7,8,8,9,{2:2}]}]}){
+        hello,
+        world
+    }
     
-}`)
+}`); */
+
+let parsedQuery = queryParser.parse(`query{
+    book(id:{id:id,name:name,genre:genre}){
+      name,
+      id,
+      genre
+    }
+  }`)
+  console.log();
+  //console.log(parsedQuery.query.book.args);
+  let validation = queryValidator.validate(parsedQuery , schema);
 
 //queryParser.parse(`{a:2,b:4,c:5,d:[1,2,3,4],e:{r:4,e:5,t:3,g:[1,2,3,4,5,6,7,8,9,10,{1:1,2:2,3:3,4:[1,2,3,4]}]}}`)
 

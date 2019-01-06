@@ -67,9 +67,9 @@ function parse(query){
             
             if(!flag){
             resultObject[internalObjectParserQueryCache] = [];
-            console.log("start");
-            console.log(resultObject , internalObjectParserQueryCache , 'aaaa');
-            console.log("end");
+            //console.log("start");
+            //console.log(resultObject , internalObjectParserQueryCache , 'aaaa');
+            //console.log("end");
             resultObject[internalObjectParserQueryCache].__flag = true
             let toy = resultObject[internalObjectParserQueryCache].__flag 
             stack.push(resultObject[internalObjectParserQueryCache]);
