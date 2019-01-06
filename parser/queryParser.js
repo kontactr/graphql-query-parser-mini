@@ -9,13 +9,13 @@ function parse(query){
     }
 
     const querylength = query.length;
-    console.log("length" , querylength);
+    //console.log("length" , querylength);
     const escapeCodes = [10,32,44,58]
     let prevQueryCache = '';
     let internalObjectParserQueryCache = "";
     function internalObjectParser(index, resultObject , stack , queryCache , flag){
         let character = query[index];
-        console.log("Called" , character);
+        //console.log("Called" , character);
         
         if(character === '{'){
             if(resultObject === null){
@@ -25,7 +25,7 @@ function parse(query){
                 return internalObjectParser(index+1 , resultObjectZero , stack , '' ,resultObjectZero.__flag);
             }   
             else{
-            console.log(internalObjectParserQueryCache , "qsdfgh");
+            //console.log(internalObjectParserQueryCache , "qsdfgh");
             if(!flag){
             resultObject[internalObjectParserQueryCache] = {}
             resultObject[internalObjectParserQueryCache].__flag = false
@@ -63,13 +63,28 @@ function parse(query){
             return internalObjectParser(index+1 , resultObject, stack , queryCache , resultObject.__flag);
         }
         else if(character === "["){
-            resultObject[internalObjectParserQueryCache] = [];
             
+            
+            if(!flag){
+            resultObject[internalObjectParserQueryCache] = [];
+            console.log("start");
+            console.log(resultObject , internalObjectParserQueryCache , 'aaaa');
+            console.log("end");
             resultObject[internalObjectParserQueryCache].__flag = true
             let toy = resultObject[internalObjectParserQueryCache].__flag 
             stack.push(resultObject[internalObjectParserQueryCache]);
-            internalObjectParserQueryCache = "";
+            internalObjectParserQueryCache = ""; 
             return internalObjectParser(index+1 , stack[stack.length - 1] , stack , '' , toy);
+            }else{
+                let newArray = [];
+                newArray.__flag = true;
+                resultObject.push(newArray);
+                stack.push(newArray);
+                internalObjectParserQueryCache = "";
+                return internalObjectParser(index+1 , stack[stack.length-1] , stack , '' , stack[stack.length - 1].__flag);    
+            }
+        
+            
         }
         else if(character === "]"){
             if(queryCache)
@@ -134,7 +149,23 @@ function parse(query){
                     // skip this parser to that index
                     // merge result object
                     //#endregion
-                }else{
+                }  else if(query[index + 1] === "["){
+                    
+                    console.log(queryObject , prevQueryCache);
+                    internalObjectParserQueryCache = prevQueryCache;
+                    let newObject = {};
+                    newObject.__flag = false;
+                    let newStack = [newObject];
+
+                    let getIndex = internalObjectParser(index+1,newObject,newStack,'',newObject.__flag);
+                    queryObject[prevQueryCache] = getIndex[prevQueryCache];
+                    prevQueryCache = '';
+                    //console.log("GetIndex", getIndex);
+                    //console.log(getIndex , 'aaaaa');
+                    //temp(newObject , query[])
+                    return temp(queryObject , query[getIndex.skipIndex+1],'',getIndex.skipIndex+1 , parserStack , queryObject.__flag);
+                } 
+                else{
 
                 return temp(queryObject , query[index+1] , '' , index + 1 , parserStack , queryObject.__flag);
                 }
@@ -188,7 +219,11 @@ function parse(query){
             if(escapeCodes.includes(query[index+1].charCodeAt(0)))
                 parserStack.pop()
             return temp(parserStack[parserStack.length - 1] , query[index + 1] , '__data' , index + 1 ,parserStack , parserStack[parserStack.length - 1].__flag);
-        }else{
+        }
+        
+        
+        
+        else{
             
             return queryObject
         }
@@ -199,12 +234,12 @@ function parse(query){
     let p = {}
     p["__flag"] = false
     temp(p , query[0] , '' , 0 , [p])
-    console.log(p.mutation.g.args.id1.c[5].a6[10]);
+    //console.log(p.hijk.g.args.id1.c[5].a6[10]['2']);
     //console.log(internalObjectParser(0 , null , [] , '' , false).e.g);
-
+    return p;
 }
 
 
 module.exports = {
-    parse,
-}
+    parse
+};
