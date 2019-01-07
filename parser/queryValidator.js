@@ -11,7 +11,7 @@ function __validateArgs(queryArgs , structureArgs){
         //console.log();
         //console.log("end")
         
-            console.log(QueryKeys,structureKeys , "poiuy");
+            //console.log(QueryKeys,structureKeys , "poiuy");
         
 
         if( !Array.isArray(QueryKeys) && structureKeys.type === "GraphQLObject"  ) {                
@@ -28,6 +28,7 @@ function __validateArgs(queryArgs , structureArgs){
             //console.log(key , "Begin-Start" , structureKeys);      
             if(structureKeys.fields[key]){
             results = results && internalValidation(QueryKeys[key] , structureKeys.fields[key]);
+            //console.log(results , "object");
             if(!results)
                 break; }else{
                     results = results && false;
@@ -37,12 +38,8 @@ function __validateArgs(queryArgs , structureArgs){
             return results;
         }else if(Array.isArray(QueryKeys) && structureKeys.type === "GraphQLList" ){
             //console.log(structureKeys);
-            for(let y of QueryKeys){
-                if(y == 1){
-                console.log()
-                console.log(y ,"Array-y", structureKeys , "Array-structureKeys");
-                console.log()
-                }
+            for(let y of QueryKeys.filter((ele) => ele !== '')){
+                //console.log(y , "array");
                 results = results && internalValidation(y , structureKeys.validationType , false);
                 if(!results)
                 break;
@@ -51,6 +48,7 @@ function __validateArgs(queryArgs , structureArgs){
         }else if(typeof structureKeys === "function"){
             //console.log(typeof structureKeys , typeof QueryKeys ,"sdfghjasdfghtesdfgh");
             results = results && structureKeys.validate(QueryKeys).booleanConverstion();
+            //console.log(results , "values");
             return results;
         }else{
             results = results && false;

@@ -49,13 +49,13 @@ for(let o=0 ; o<p.length ; o++){
 }`); */
 
 let parsedQuery = queryParser.parse(`query{
-    book(id:[[[{name:name,id:id,genre:genre}]]]){
+    book(id:[[[{name:name,id:id,genre:genre},{name:name,id:id,genre:genre}],[{name:name,id:id,genre:genre}]],[[{name:name,id:id,genre:genre}]]]){
       name,
       id,
       genre
     }
   }`)
-  console.log();
+  console.log(parsedQuery.query.book.args.id);
   //console.log(parsedQuery.query.book.args);
   let validation = queryValidator.validate(parsedQuery , schema);
 
