@@ -37,8 +37,12 @@ function __validateArgs(queryArgs , structureArgs){
                 break;
             }
             return results;
-        }else{
+        }else if(typeof structureKeys === "function"){
+            console.log(typeof structureKeys , typeof QueryKeys ,"sdfghjasdfghtesdfgh");
             results = results && structureKeys.validate(QueryKeys).booleanConverstion();
+            return results;
+        }else{
+            results = results && false;
             return results;
         }
     }

@@ -49,7 +49,7 @@ for(let o=0 ; o<p.length ; o++){
 }`); */
 
 let parsedQuery = queryParser.parse(`query{
-    book(id:{id:id,name:name,genre:genre}){
+    book(id:1){
       name,
       id,
       genre
