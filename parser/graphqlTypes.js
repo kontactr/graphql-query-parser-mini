@@ -1,3 +1,14 @@
+class GraphQLNull{
+    static booleanConverstion(){
+        return false;
+    }
+    static validate(data){
+        //remaining from here null parsing
+        return GraphQLError;
+    }
+}
+GraphQLNull.type = "GraphQLNull";
+
 class GraphQLError{
     static type(){
         return "GraphQLError";
