@@ -10,9 +10,9 @@ const booksArray = [
 const book = new graphql.GraphQLObject({
     name: "Book",
     fields: () => { return{
-        id: graphql.GraphQLString,
-        name: graphql.GraphQLString,
-        genre: graphql.GraphQLString
+        id: {type:graphql.GraphQLString},
+        name: {type:graphql.GraphQLString},
+        genre: {type:graphql.GraphQLString}
     }}
 });
 
@@ -22,7 +22,7 @@ const RootQuery = new graphql.GraphQLObject({
     fields: {
         book : {
             type: book,
-            args: {id:new graphql.GraphQLList(new graphql.GraphQLList(new graphql.GraphQLList(book)))},
+            args: {id:{type:new graphql.GraphQLList(new graphql.GraphQLList(new graphql.GraphQLList(book)))}},
             resolve(parent , args) {
                const t =   booksArray.filter((obj) => {return obj.id === args.id});
                return t.length > 0 ? t[0] : [];

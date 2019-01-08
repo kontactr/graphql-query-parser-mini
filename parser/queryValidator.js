@@ -5,11 +5,11 @@ function __validateArgs(queryArgs , structureArgs){
     let results = true;
     
     function internalValidation(QueryKeys , structureKeys , flag){
-        //console.log("start")
-        //console.log();
-        //console.log(QueryKeys , Array.isArray(QueryKeys) , structureKeys)
-        //console.log();
-        //console.log("end")
+        console.log("start")
+        console.log();
+        console.log(QueryKeys , Array.isArray(QueryKeys) , typeof structureKeys)
+        console.log();
+        console.log("end")
         
             //console.log(QueryKeys,structureKeys , "poiuy");
         
@@ -19,9 +19,9 @@ function __validateArgs(queryArgs , structureArgs){
             if(structureKeys.__functionFields){
                 structureKeys.functionTofields();
             }
-            //console.log()
-            //console.log(structureKeys , "data")
-            //console.log()
+            console.log()
+            console.log(structureKeys , "data")
+            console.log()
 
         for(let key of Object.keys(QueryKeys).filter((key) => (key !== '__flag' && key !== 'skipIndex'))){
             //console.log();
@@ -45,6 +45,10 @@ function __validateArgs(queryArgs , structureArgs){
                 break;
             }
             return results;
+        }else if(typeof structureKeys === "object"){
+            results = results && internalValidation(QueryKeys,structureKeys.type,false);
+            return results;
+
         }else if(typeof structureKeys === "function"){
             //console.log(typeof structureKeys , typeof QueryKeys ,"sdfghjasdfghtesdfgh");
             results = results && structureKeys.validate(QueryKeys).booleanConverstion();
@@ -68,7 +72,7 @@ function __validateStructure(query , structure){
     if("args" in query){
         for(let y of Object.keys(query.args).filter((key) => key !== "__flag")){
             //console.log(query.args[y] , structure.args[y] , "Begin");
-        console.log(__validateArgs(query.args[y] , structure.args[y]));
+        console.log(__validateArgs(query.args[y] , structure.args[y].type));
         }
     }
 
